@@ -1,0 +1,45 @@
+const singleRoomCost = 25000.00;
+const doubleRoomCost = 35000.00;
+const tripleRoomCost = 40000.00;
+const kidCost = 5000.00;
+const bedCost = 8000.00;
+const promoCodeDiscountPercentage = 5;
+
+function bookRoomNow() {    
+    const singleRooms = parseInt(document.getElementById("singleRooms").value) || 0;
+    const doubleRooms = parseInt(document.getElementById("doubleRooms").value) || 0;
+    const tripleRooms = parseInt(document.getElementById("tripleRooms").value) || 0;
+
+    const currentBookingCost = calculateCurrentBookingCost(singleRooms, doubleRooms, tripleRooms);
+
+    document.getElementById("currentBookingCost").innerText = currentBookingCost.toFixed(2);
+
+    const overallBookingCost = parseFloat(document.getElementById("overallBookingCost").innerText) + currentBookingCost;
+    document.getElementById("overallBookingCost").innerText = overallBookingCost.toFixed(2);
+    
+    const confirmationMessage = `Thank you for booking!\n\nDetails:\nSingle Rooms: ${singleRooms}\nDouble Rooms: ${doubleRooms}\nTriple Rooms: ${tripleRooms}\nTotal Cost: ${currentBookingCost.toFixed(2)}`;
+
+    alert(confirmationMessage);
+    
+    document.getElementById("bookingForm").reset();   
+}
+
+function calculateCurrentBookingCost(singleRooms, doubleRooms, tripleRooms) {
+    const kids = parseInt(document.getElementById("childrenInput").value) || 0;
+    const beds = parseInt(document.getElementById("beds").value) || 0;
+    const promoCodes = document.getElementById("promoCode").value;
+
+    let currentBookingCost = (singleRooms * singleRoomCost) + (doubleRooms * doubleRoomCost) + (tripleRooms * tripleRoomCost) + (kids * kidCost) + (beds * bedCost);
+
+    if (promoCodes === 'Promo123') {
+        const discountAmount = (promoCodeDiscountPercentage / 100) * currentBookingCost;
+        currentBookingCost -= discountAmount;
+    }
+
+    return currentBookingCost;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("currentBookingCost").innerText = "0.00";
+    document.getElementById("overallBookingCost").innerText = "0.00";
+});
